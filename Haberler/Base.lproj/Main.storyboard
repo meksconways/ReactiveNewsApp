@@ -1,24 +1,143 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="u2S-Yj-iX9">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
-        <scene sceneID="tne-QT-ifu">
+        <!--Galeri Haberleri-->
+        <scene sceneID="t9c-ep-urR">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                <viewController id="YEV-LN-nZ4" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="zEg-HG-UOb">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="0in-Lm-mwf"/>
                     </view>
+                    <navigationItem key="navigationItem" title="Galeri Haberleri" id="bfU-ug-143"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Z5o-FH-SCH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="406" y="1418"/>
+        </scene>
+        <!--Köşe Yazıları-->
+        <scene sceneID="5RO-S5-Kv1">
+            <objects>
+                <viewController id="gY8-Jo-XUg" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="dn3-0Y-iyx">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="Gu0-WE-Fhg"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Köşe Yazıları" id="30n-6R-Zqv"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="cEd-A4-r4H" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1297" y="1418"/>
+        </scene>
+        <!--Haberler-->
+        <scene sceneID="vKw-DH-85L">
+            <objects>
+                <viewController id="wiX-Rh-2jv" customClass="ListNewsVC" customModule="Haberler" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="l9Q-gl-qn0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="QZH-Di-Fya"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Haberler" id="yid-7C-pPn"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7Lm-A7-l2S" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-492" y="1419"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="YZh-Ci-zOp">
+            <objects>
+                <tabBarController id="u2S-Yj-iX9" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="1E1-Kd-gfD">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="NNW-he-DJo" kind="relationship" relationship="viewControllers" id="1aA-2s-VFC"/>
+                        <segue destination="Vko-dw-06d" kind="relationship" relationship="viewControllers" id="8Cx-qc-k4e"/>
+                        <segue destination="U6c-nQ-cQW" kind="relationship" relationship="viewControllers" id="JfT-bg-UVW"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="1se-D6-X6i" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="193" y="-111"/>
+        </scene>
+        <!--Haberler-->
+        <scene sceneID="Kf7-I4-zQL">
+            <objects>
+                <navigationController title="Haberler" automaticallyAdjustsScrollViewInsets="NO" id="NNW-he-DJo" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Haberler" image="tab1" selectedImage="tab1" id="HJ9-P9-73V"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="NG8-ca-NuM">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="wiX-Rh-2jv" kind="relationship" relationship="rootViewController" id="Ep6-76-eBS"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Qtr-cT-Hu8" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-492" y="641.82908545727139"/>
+        </scene>
+        <!--Galeri Haberleri-->
+        <scene sceneID="tcU-lu-Qse">
+            <objects>
+                <navigationController title="Galeri Haberleri" automaticallyAdjustsScrollViewInsets="NO" id="Vko-dw-06d" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Galeri" image="tab2" id="SQN-EJ-1Lj"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="lCa-er-Lfb">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="YEV-LN-nZ4" kind="relationship" relationship="rootViewController" id="8N4-l7-wOU"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P7U-zd-zh6" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="405.60000000000002" y="641.82908545727139"/>
+        </scene>
+        <!--Köşe Yazıları-->
+        <scene sceneID="gVp-EV-9bf">
+            <objects>
+                <navigationController title="Köşe Yazıları" automaticallyAdjustsScrollViewInsets="NO" id="U6c-nQ-cQW" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Köşe Yazıları" image="tab3" selectedImage="tab3" id="0QM-7P-PzE"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Cn2-Js-sOB">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="gY8-Jo-XUg" kind="relationship" relationship="rootViewController" id="hPF-X7-SBB"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="K4u-rG-dIT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1298" y="642"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="tab1" width="72" height="72"/>
+        <image name="tab2" width="72" height="72"/>
+        <image name="tab3" width="72" height="72"/>
+    </resources>
 </document>
