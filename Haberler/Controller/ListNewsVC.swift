@@ -43,7 +43,14 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        for family: String in UIFont.familyNames
+        {
+            print(family)
+            for names: String in UIFont.fontNames(forFamilyName: family)
+            {
+                print("== \(names)")
+            }
+        }
         setupUI()
         getAllNews()
     }
@@ -85,11 +92,11 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             make.right.equalToSuperview()
             make.height.equalTo(100)
         }
-        self.tabBarController?.tabBar.layer.masksToBounds = false
-        self.tabBarController?.tabBar.layer.cornerRadius = 16.0
         
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Dosis-SemiBold", size: 20)!]
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
+        
         coloredView.backgroundColor = self.navigationController?.navigationBar.barTintColor
         
         mainView.snp.makeConstraints { (make) in
@@ -146,6 +153,100 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     
 }
 
+class SubNewsTableViewCell: UITableViewCell,UICollectionViewDelegate,UICollectionViewDataSource {
+   
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return pathNewsList.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        <#code#>
+    }
+    
+    var pathNewsList: [ArticleNewsModelElement] = []
+    
+    func setData(model: [ArticleNewsModelElement]){
+        
+    }
+    
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func layoutSubviews() {
+        setupUI()
+    }
+    
+    let mainView: UIView = {
+       
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+        
+    }()
+    let linearLayout: UIStackView = {
+        let view = UIStackView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.alignment = .fill
+        view.axis = .horizontal
+        view.distribution = .fillEqually
+        return view
+    }()
+    
+    let titleText: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "Dosis-Bold", size: 22)
+        label.textColor = UIColor(rgb: 0x212121)
+        return label
+    }()
+    
+    let viewAllButton: UIButton = {
+        let btn = UIButton(type: UIButton.ButtonType.system)
+        btn.translatesAutoresizingMaskIntoConstraints = false
+        btn.setTitle("Tümünü Gör", for: UIControl.State.normal)
+        btn.backgroundColor = UIColor.clear
+        btn.setTitleColor(UIColor(rgb: 0x797979), for: UIControl.State.normal)
+        btn.titleLabel?.font = UIFont(name: "Dosis-SemiBold", size: 16)
+        
+        return btn
+    }()
+    
+    let collectionViewContainer: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    func setupUI(){
+        addSubview(mainView)
+        mainView.addSubview(linearLayout)
+        linearLayout.addArrangedSubview(titleText)
+        linearLayout.addArrangedSubview(viewAllButton)
+        mainView.addSubview(collectionViewContainer)
+        
+        mainView.snp.makeConstraints { (make) in
+            make.size.equalToSuperview()
+        }
+        linearLayout.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
+        }
+        collectionViewContainer.snp.makeConstraints { (make) in
+            make.top.equalTo(linearLayout.snp.bottom).offset(10)
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+    }
+    
+}
+
 class MainListTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
     
     
@@ -188,9 +289,6 @@ class MainListTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollect
     }()
     
     var collectionview : UICollectionView!
-    
-    
-    
     
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -272,7 +370,8 @@ class TopNewsCollectionViewCell : UICollectionViewCell {
     let title: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont.systemFont(ofSize: 20.0, weight: UIFont.Weight.semibold)
+        //label.font = UIFont.systemFont(ofSize: 20.0, weight: UIFont.Weight.semibold)
+        label.font = UIFont(name: "Dosis-SemiBold", size: 20)
         label.textColor = UIColor(rgb: 0xffffff)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0 // sıfır kısıtlama olmaması demek, satır sayısını kıstlamaz sınırsız satır olabilir demek gibi bişey
