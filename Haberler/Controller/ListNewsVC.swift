@@ -19,27 +19,55 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 3
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! MainListTableViewCell
-        cell.selectionStyle = .none
-        cell.setData(model: self.news)
-        return cell
+        
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! MainListTableViewCell
+            cell.selectionStyle = .none
+            cell.setData(model: self.news)
+            return cell
+        }else if indexPath.section == 1{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "DunyaCell") as! SubNewsTableViewCell
+            cell.selectionStyle = .none
+            cell.titleText.text = "Dünya Haberleri"
+            cell.setData(model: self.news)
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "SporCell") as! SubNewsTableViewCell
+            cell.selectionStyle = .none
+            cell.titleText.text = "Spor Haberleri"
+            cell.setData(model: self.news)
+            return cell
+        }
+        
+        
     }
     
     func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width * 11 / 16
+        if indexPath.section == 0 {
+            return self.view.frame.width * 11 / 16
+        }else{
+            return self.view.frame.width * 1 / 16
+        }
+        
     }
     
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return self.view.frame.width * 11 / 16
-        // tableview in otomatik boyutunu belirtir
+       if indexPath.section == 0 {
+            return self.view.frame.width * 11 / 16
+        }else{
+            return self.view.frame.width * 1 / 1
+        }
+        
     }
     
     var news : [ArticleNewsModelElement] = []
+    var sportNews: [ArticleNewsModelElement] = []
+    var dunyaNews: [ArticleNewsModelElement] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -106,14 +134,16 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         table_view.snp.makeConstraints { (make) in
             make.size.equalToSuperview()
         }
-        table_view.rowHeight = UITableView.automaticDimension
-        table_view.separatorStyle = .singleLine
+        //table_view.rowHeight = UITableView.automaticDimension
+        table_view.separatorStyle = .none
         table_view.separatorInset = .init(top: 0, left: 0, bottom: 0, right: 0)
         table_view.backgroundColor = UIColor.clear
         table_view.delegate = self
         table_view.dataSource = self
         
         table_view.register(MainListTableViewCell.self, forCellReuseIdentifier: "NewsCell")
+        table_view.register(SubNewsTableViewCell.self, forCellReuseIdentifier: "SporCell")
+        table_view.register(SubNewsTableViewCell.self, forCellReuseIdentifier: "DunyaCell")
         
         
         
@@ -127,6 +157,8 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             .subscribe(
                 onNext: {newsList in
                     self.news = newsList
+                    self.dunyaNews = newsList
+                    self.sportNews = newsList
             },
                 onError: { error in
                     switch error {
@@ -142,11 +174,83 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
             }, onCompleted: {
                 // hide progress
                 self.table_view.reloadData()
-                let cell = self.table_view.dequeueReusableCell(withIdentifier: "NewsCell") as! MainListTableViewCell
-                cell.newsList = self.news
+                //let cell = self.table_view.dequeueReusableCell(withIdentifier: "SporCell") as! SubNewsTableViewCell
+                //cell.setData(model: self.news)
                 
             })
             .disposed(by: disposeBag)
+    }
+    
+    
+    
+}
+
+
+class SubNewsCollectionViewCell: UICollectionViewCell {
+ 
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    override func awakeFromNib() {
+        
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    let mainView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let newsImage: UIImageView = {
+        let image = UIImageView()
+        image.translatesAutoresizingMaskIntoConstraints = false
+        image.contentMode = .scaleAspectFill
+        return image
+    }()
+    
+    let newsText: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "Dosis-SemiBold", size: 14.0)
+        label.numberOfLines = 3
+        label.textColor = UIColor(rgb: 0x212121)
+        return label
+    }()
+    
+    
+    func setData(model: ArticleNewsModelElement) {
+        print(model.title)
+        newsText.text = model.title
+        let imageURL = URL(string: model.files[0].fileURL)!
+        newsImage.kf.setImage(with: imageURL)
+    }
+    
+    func setupUI(){
+        addSubview(mainView)
+        mainView.addSubview(newsImage)
+        mainView.addSubview(newsText)
+        
+        mainView.snp.makeConstraints { (make) in
+            make.size.equalToSuperview().inset(10)
+        }
+        newsImage.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview()
+            make.bottom.equalToSuperview()
+            make.width.equalTo(newsImage.snp.height)
+        }
+        newsText.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(10)
+            make.left.equalTo(newsImage.snp.right).offset(10)
+            make.right.equalToSuperview().offset(-10)
+        }
+        newsImage.clipsToBounds = true
     }
     
     
@@ -160,13 +264,17 @@ class SubNewsTableViewCell: UITableViewCell,UICollectionViewDelegate,UICollectio
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        <#code#>
+        let model = pathNewsList[indexPath.row]
+        let cell = collectionview.dequeueReusableCell(withReuseIdentifier: "subnews", for: indexPath) as! SubNewsCollectionViewCell
+        cell.setData(model: model)
+        return cell
     }
     
+    var collectionview: UICollectionView!
     var pathNewsList: [ArticleNewsModelElement] = []
     
     func setData(model: [ArticleNewsModelElement]){
-        
+        self.pathNewsList = model
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -243,16 +351,31 @@ class SubNewsTableViewCell: UITableViewCell,UICollectionViewDelegate,UICollectio
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width * 1 / 3 )
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionview = UICollectionView(frame: self.frame, collectionViewLayout: layout)
+        collectionview.isPagingEnabled = true
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        collectionview.dataSource = self
+        collectionview.backgroundColor = UIColor.clear
+        collectionview.flashScrollIndicators()
+        collectionview.delegate = self
+        collectionview.register(SubNewsCollectionViewCell.self, forCellWithReuseIdentifier: "subnews")
+        collectionview.showsHorizontalScrollIndicator = false
+        collectionViewContainer.addSubview(collectionview)
+        collectionview.reloadData()
     }
     
 }
 
-class MainListTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollectionViewDataSource,UICollectionViewDelegateFlowLayout {
+class MainListTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollectionViewDataSource{
     
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (self.window?.frame.width)!, height: (self.window?.frame.width)! * 11 / 16)
-    }
+   
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return newsList.count
@@ -382,12 +505,11 @@ class TopNewsCollectionViewCell : UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-    }
-    
-    override func layoutSubviews() {
         setupUI()
     }
+    
+   
+   
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
@@ -438,7 +560,7 @@ class TopNewsCollectionViewCell : UICollectionViewCell {
         
         let gradient = CAGradientLayer()
         gradient.frame = graView.bounds
-        gradient.colors = [ UIColor.clear.withAlphaComponent(0.0).cgColor, UIColor(rgb: 0x000000).withAlphaComponent(0.4).cgColor, UIColor(rgb: 0x000000).cgColor]
+        gradient.colors = [ UIColor.clear.withAlphaComponent(1.0).cgColor, UIColor(rgb: 0x000000).withAlphaComponent(0.4).cgColor, UIColor(rgb: 0x000000).cgColor]
         gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
         graView.layer.insertSublayer(gradient, at: 0)
