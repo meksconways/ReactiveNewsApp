@@ -65,10 +65,32 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         
     }()
     
+    let coloredView:UIView = {
+        
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+        
+    }()
+    
     func setupUI(){
         self.tabBarController?.tabBar.unselectedItemTintColor = UIColor(white: 1, alpha: 0.5)
         self.view.addSubview(mainView)
+        mainView.addSubview(coloredView)
         mainView.addSubview(table_view)
+        
+        coloredView.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview()
+            make.right.equalToSuperview()
+            make.height.equalTo(100)
+        }
+        self.tabBarController?.tabBar.layer.masksToBounds = false
+        self.tabBarController?.tabBar.layer.cornerRadius = 16.0
+        
+        self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
+        self.navigationController?.navigationBar.shadowImage = UIImage()
+        coloredView.backgroundColor = self.navigationController?.navigationBar.barTintColor
         
         mainView.snp.makeConstraints { (make) in
             make.size.equalToSuperview()
@@ -80,9 +102,10 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         table_view.rowHeight = UITableView.automaticDimension
         table_view.separatorStyle = .singleLine
         table_view.separatorInset = .init(top: 0, left: 0, bottom: 0, right: 0)
-        table_view.backgroundColor = UIColor(rgb: 0xebebeb)
+        table_view.backgroundColor = UIColor.clear
         table_view.delegate = self
         table_view.dataSource = self
+        
         table_view.register(MainListTableViewCell.self, forCellReuseIdentifier: "NewsCell")
         
         
@@ -149,11 +172,16 @@ class MainListTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollect
     
     
     func setData(model: [ArticleNewsModelElement]){
-        print("***",model.count)
         self.newsList = model
     }
     
     let mainView : UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    let subView : UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -177,6 +205,7 @@ class MainListTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollect
     
     
     func setupUI(){
+        backgroundColor = UIColor.clear
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
         layout.itemSize = CGSize(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width * 9 / 16)
@@ -188,6 +217,8 @@ class MainListTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollect
         layout.minimumInteritemSpacing = 0
         layout.minimumLineSpacing = 0
         collectionview.dataSource = self
+        collectionview.backgroundColor = UIColor.clear
+        collectionview.flashScrollIndicators()
         collectionview.delegate = self
         collectionview.register(TopNewsCollectionViewCell.self, forCellWithReuseIdentifier: "cellId")
         collectionview.showsHorizontalScrollIndicator = false
@@ -204,16 +235,17 @@ class TopNewsCollectionViewCell : UICollectionViewCell {
         
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(rgb: 0xfafafa)
         return view
         
     }()
+    
+    
+    
     
     let subView : UIView = {
         
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(rgb: 0xfafafa)
         return view
         
     }()
@@ -274,8 +306,7 @@ class TopNewsCollectionViewCell : UICollectionViewCell {
         subView.addSubview(newsImage)
         subView.addSubview(graView)
         subView.addSubview(title)
-        
-        
+    
         
         mainView.snp.makeConstraints { (make) in
             make.size.equalToSuperview()
@@ -312,7 +343,7 @@ class TopNewsCollectionViewCell : UICollectionViewCell {
         gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
         gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
         graView.layer.insertSublayer(gradient, at: 0)
-        graView.alpha = 0.7
+        graView.alpha = 0.5
         
         newsImage.clipsToBounds = true
         subView.clipsToBounds = true
@@ -323,18 +354,6 @@ class TopNewsCollectionViewCell : UICollectionViewCell {
     
 }
 
-class Colors {
-    var gl:CAGradientLayer!
-    
-    init() {
-        let colorTop = UIColor(rgb: 0xfafafa).cgColor
-        let colorBottom = UIColor(rgb: 0x000000).cgColor
-        
-        self.gl = CAGradientLayer()
-        self.gl.colors = [colorTop, colorBottom]
-        self.gl.locations = [0.0, 1.0]
-    }
-}
 
 extension UIColor {
     convenience init(red: Int, green: Int, blue: Int) {
