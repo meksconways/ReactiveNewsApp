@@ -33,6 +33,7 @@
 		FA63A947222700D700E0C4FE /* ArticleNewsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA63A946222700D700E0C4FE /* ArticleNewsModel.swift */; };
 		FA955935223929C900A7A84A /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA955934223929C900A7A84A /* MainViewController.swift */; };
 		FA9559382239382000A7A84A /* ArticlesNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9559372239382000A7A84A /* ArticlesNewsCell.swift */; };
+		FA95593A2239567000A7A84A /* SubArticleNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9559392239567000A7A84A /* SubArticleNewsCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -91,6 +92,7 @@
 		FA63A946222700D700E0C4FE /* ArticleNewsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticleNewsModel.swift; sourceTree = "<group>"; };
 		FA955934223929C900A7A84A /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		FA9559372239382000A7A84A /* ArticlesNewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesNewsCell.swift; sourceTree = "<group>"; };
+		FA9559392239567000A7A84A /* SubArticleNewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubArticleNewsCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -257,6 +259,7 @@
 			isa = PBXGroup;
 			children = (
 				FA9559372239382000A7A84A /* ArticlesNewsCell.swift */,
+				FA9559392239567000A7A84A /* SubArticleNewsCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -506,6 +509,7 @@
 			files = (
 				FA63A9062226EA1A00E0C4FE /* ViewController.swift in Sources */,
 				FA63A9042226EA1A00E0C4FE /* AppDelegate.swift in Sources */,
+				FA95593A2239567000A7A84A /* SubArticleNewsCell.swift in Sources */,
 				FA63A93E2226F47F00E0C4FE /* ApiRouter.swift in Sources */,
 				FA282DB1222712EA00168107 /* ListNewsVC.swift in Sources */,
 				FA63A947222700D700E0C4FE /* ArticleNewsModel.swift in Sources */,

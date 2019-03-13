@@ -15,14 +15,46 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
 
         collectionView.backgroundColor = UIColor.white
         collectionView.register(ArticlesNewsCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView.register(SubArticleNewsCell.self, forCellWithReuseIdentifier: subCellID)
         self.title = "Haberler"
         getAllNews()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.bounds.width, height: view.bounds.width * 12 / 16)
+        
+        if indexPath.section == 0{
+            return CGSize(width: view.bounds.width, height: view.bounds.width * 12 / 16)
+        }else{
+            return CGSize(width: view.bounds.width, height: 260)
+        }
+        
+        
     }
 
+    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 1
+    }
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if indexPath.section == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! ArticlesNewsCell
+            cell.newsList = self.news
+            return cell
+        }else{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
+            cell.pathName = "Dünya Haberleri"
+            cell.subNews = self.news
+//            cell.subNews = self.news.filter({ (element) -> Bool in
+//                element.path == "/dunya/"
+//            })
+            return cell
+        }
+        
+    }
+    let subCellID: String = "subCellID"
     let cellID: String = "cellID"
     var news:[ArticleNewsModelElement] = []
     
@@ -55,17 +87,6 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
                 
             })
             .disposed(by: disposeBag)
-    }
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 6
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! ArticlesNewsCell
-        cell.newsList = self.news
-        return cell
     }
 }
 

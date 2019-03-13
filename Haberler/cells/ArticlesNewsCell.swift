@@ -17,6 +17,10 @@ UICollectionViewDelegateFlowLayout{
         return CGSize(width: self.bounds.width, height: self.bounds.width * 10 / 16)
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if let count = newsList?.count{
             return count
@@ -30,9 +34,7 @@ UICollectionViewDelegateFlowLayout{
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-    }
+    
     
     
     override init(frame: CGRect) {
@@ -58,7 +60,7 @@ UICollectionViewDelegateFlowLayout{
         label.font = UIFont(name: "Dosis-SemiBold", size: 20)
         label.textColor = UIColor(rgb: 0x323232)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Spor Haberleri"
+        label.text = "Tüm Haberler"
         label.numberOfLines = 0 // sıfır kısıtlama olmaması demek, satır sayısını kıstlamaz sınırsız satır olabilir demek gibi bişey
         return label
         
@@ -72,6 +74,7 @@ UICollectionViewDelegateFlowLayout{
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.flashScrollIndicators()
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isPagingEnabled = true
         return collectionView
