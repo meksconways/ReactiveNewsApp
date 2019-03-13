@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 class SubArticleNewsCell: UICollectionViewCell,
 UICollectionViewDelegate,UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout{
@@ -18,7 +19,7 @@ UICollectionViewDelegateFlowLayout{
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 10, left: 10, bottom: 0, right: 0)
+        return UIEdgeInsets(top: 10, left: 10, bottom: 0, right: -10)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -104,6 +105,8 @@ UICollectionViewDelegateFlowLayout{
             make.top.equalTo(title.snp.bottom)
             make.bottom.equalToSuperview()
         }
+        
+       
     }
     
     
@@ -169,7 +172,7 @@ class SubArticlesNewsCollectionViewCell: UICollectionViewCell {
             make.height.equalTo(newsImage.snp.width).multipliedBy(1.0)
         }
         newsText.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(10)
+            make.top.equalToSuperview()
             make.left.equalTo(newsImage.snp.right).offset(10)
             make.right.equalToSuperview().offset(-20)
             

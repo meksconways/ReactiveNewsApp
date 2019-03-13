@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Kingfisher
 class ArticlesNewsCell: UICollectionViewCell,
 UICollectionViewDelegate,
 UICollectionViewDataSource,
@@ -87,18 +88,15 @@ UICollectionViewDelegateFlowLayout{
         articleCollectionView.register(ArticleNewsCollectionViewCell.self, forCellWithReuseIdentifier: "cellid")
         
         addSubview(articleCollectionView)
-        addSubview(title)
-        title.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(10)
-            make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
-        }
+
         articleCollectionView.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.top.equalTo(title.snp.bottom)
+            make.top.equalToSuperview()
             make.bottom.equalToSuperview()
         }
+        
+        
     }
     
 }
@@ -108,6 +106,10 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
+    }
+    
+    override func layoutSubviews() {
+        gradient.frame = newsImage.bounds
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -122,6 +124,8 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
         }
     }
     
+    private var gradient: CAGradientLayer!
+    
     func setupUI(){
         addSubview(mainView)
         mainView.addSubview(subView)
@@ -129,12 +133,17 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
         subView.addSubview(graView)
         subView.addSubview(title)
         
+        gradient = CAGradientLayer()
+        gradient.frame = newsImage.bounds
+        gradient.colors = [UIColor.black.cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.black.cgColor]
+        gradient.locations = [0.9,1.0]
+        newsImage.layer.mask = gradient
         
         mainView.snp.makeConstraints { (make) in
             make.size.equalToSuperview()
         }
         subView.snp.makeConstraints { (make) in
-            make.top.equalToSuperview().offset(10)
+            make.top.equalToSuperview()
             make.left.equalToSuperview().offset(10)
             make.right.equalToSuperview().offset(-10)
             make.bottom.equalToSuperview()
@@ -159,13 +168,6 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
             make.bottom.equalToSuperview()
         }
         
-        let gradient = CAGradientLayer()
-        gradient.frame = graView.bounds
-        gradient.colors = [ UIColor.clear.withAlphaComponent(1.0).cgColor, UIColor(rgb: 0x000000).withAlphaComponent(0.4).cgColor, UIColor(rgb: 0x000000).cgColor]
-        gradient.startPoint = CGPoint(x: 0.0, y: 0.0)
-        gradient.endPoint = CGPoint(x: 0.0, y: 1.0)
-        graView.layer.insertSublayer(gradient, at: 0)
-        graView.alpha = 0.5
         
         newsImage.clipsToBounds = true
         subView.clipsToBounds = true
@@ -204,7 +206,6 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
         
         let img = UIImageView()
         img.contentMode = .scaleAspectFill
-        img.image = UIImage(named: "bgi_2")
         img.translatesAutoresizingMaskIntoConstraints = false
         return img
         
@@ -214,12 +215,10 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
     let title: UILabel = {
         
         let label = UILabel()
-        //label.font = UIFont.systemFont(ofSize: 20.0, weight: UIFont.Weight.semibold)
-        label.font = UIFont(name: "Dosis-SemiBold", size: 20)
+        label.font = UIFont(name: "Dosis-Bold", size: 22)
         label.textColor = UIColor(rgb: 0xffffff)
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Gradientte Büyük indirim"
-        label.numberOfLines = 0 // sıfır kısıtlama olmaması demek, satır sayısını kıstlamaz sınırsız satır olabilir demek gibi bişey
+        label.numberOfLines = 0
         return label
         
     }()

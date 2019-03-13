@@ -18,15 +18,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "Dosis-SemiBold", size: 11)!], for: UIControl.State.normal)
-        
-        let layout = UICollectionViewFlowLayout()
-        let controller = MainViewController(collectionViewLayout: layout)
-        
         window = UIWindow(frame: UIScreen.main.bounds)
         window?.makeKeyAndVisible()
-        window?.rootViewController = UINavigationController(rootViewController: controller)
-        
+        window?.rootViewController = MainTabBarControllerViewController()
         return true
     }
 

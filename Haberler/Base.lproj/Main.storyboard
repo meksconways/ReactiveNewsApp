@@ -45,7 +45,7 @@
         <!--Haberler-->
         <scene sceneID="vKw-DH-85L">
             <objects>
-                <viewController id="wiX-Rh-2jv" customClass="ListNewsVC" customModule="Haberler" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="wiX-Rh-2jv" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="l9Q-gl-qn0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

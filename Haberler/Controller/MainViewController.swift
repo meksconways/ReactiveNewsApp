@@ -12,7 +12,10 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Dosis-SemiBold", size: 20)!]
+        self.navigationController?.navigationBar.barStyle = .black
+        self.navigationController?.navigationBar.isTranslucent = false
+        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: 0xc54545)
         collectionView.backgroundColor = UIColor.white
         collectionView.register(ArticlesNewsCell.self, forCellWithReuseIdentifier: cellID)
         collectionView.register(SubArticleNewsCell.self, forCellWithReuseIdentifier: subCellID)
@@ -23,7 +26,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         if indexPath.section == 0{
-            return CGSize(width: view.bounds.width, height: view.bounds.width * 12 / 16)
+            return CGSize(width: view.bounds.width, height: view.bounds.width * 11 / 16)
         }else{
             return CGSize(width: view.bounds.width, height: 260)
         }
@@ -35,7 +38,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         return 1
     }
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 5
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -43,15 +46,50 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! ArticlesNewsCell
             cell.newsList = self.news
             return cell
-        }else{
+        }
+        else if indexPath.section == 2{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
             cell.pathName = "Dünya Haberleri"
-            cell.subNews = self.news
-//            cell.subNews = self.news.filter({ (element) -> Bool in
-//                element.path == "/dunya/"
-//            })
+            cell.subNews = self.news.filter({ (element) -> Bool in
+                element.path == "/dunya/"
+            })
             return cell
         }
+        else if indexPath.section == 1{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
+            cell.pathName = "Spor Haberleri"
+            cell.subNews = self.news.filter({ (element) -> Bool in
+                element.path.contains("spor")
+            })
+            return cell
+        }
+        else if indexPath.section == 3{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
+            cell.pathName = "Gündem Haberleri"
+            cell.subNews = self.news.filter({ (element) -> Bool in
+                element.path == "/gundem/"
+            })
+            return cell
+            
+        }
+        else if indexPath.section == 4{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
+            cell.pathName = "Magazin Haberleri"
+            cell.subNews = self.news.filter({ (element) -> Bool in
+                element.path.contains("magazin")
+            })
+            return cell
+            
+        }
+        else{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
+            cell.pathName = "Gündem Haberleri"
+            cell.subNews = self.news.filter({ (element) -> Bool in
+                element.path == "/gundem/"
+            })
+            return cell
+        }
+    
         
     }
     let subCellID: String = "subCellID"
@@ -87,6 +125,24 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
                 
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension UIColor {
+    convenience init(red: Int, green: Int, blue: Int) {
+        assert(red >= 0 && red <= 255, "Geçersiz red component")
+        assert(green >= 0 && green <= 255, "Geçersiz green component")
+        assert(blue >= 0 && blue <= 255, "Geçersiz blue component")
+        
+        self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+    }
+    
+    convenience init(rgb: Int) {
+        self.init(
+            red: (rgb >> 16) & 0xFF,
+            green: (rgb >> 8) & 0xFF,
+            blue: rgb & 0xFF
+        )
     }
 }
 
