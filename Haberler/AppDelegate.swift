@@ -20,6 +20,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         UITabBarItem.appearance().setTitleTextAttributes([NSAttributedString.Key.font: UIFont(name: "Dosis-SemiBold", size: 11)!], for: UIControl.State.normal)
         
+        let layout = UICollectionViewFlowLayout()
+        let controller = MainViewController(collectionViewLayout: layout)
+        
+        window = UIWindow(frame: UIScreen.main.bounds)
+        window?.makeKeyAndVisible()
+        window?.rootViewController = UINavigationController(rootViewController: controller)
+        
         return true
     }
 

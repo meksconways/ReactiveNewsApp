@@ -27,19 +27,19 @@ class ListNewsVC: UIViewController,UITableViewDelegate,UITableViewDataSource {
         if indexPath.section == 0 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "NewsCell") as! MainListTableViewCell
             cell.selectionStyle = .none
-            cell.setData(model: self.news)
+            //cell.setData(model: self.news)
             return cell
         }else if indexPath.section == 1{
             let cell = tableView.dequeueReusableCell(withIdentifier: "DunyaCell") as! SubNewsTableViewCell
             cell.selectionStyle = .none
             cell.titleText.text = "Dünya Haberleri"
-            cell.setData(model: self.news)
+            //cell.setData(model: self.news)
             return cell
         }else{
             let cell = tableView.dequeueReusableCell(withIdentifier: "SporCell") as! SubNewsTableViewCell
             cell.selectionStyle = .none
             cell.titleText.text = "Spor Haberleri"
-            cell.setData(model: self.news)
+            //cell.setData(model: self.news)
             return cell
         }
         
@@ -375,6 +375,38 @@ class SubNewsTableViewCell: UITableViewCell,UICollectionViewDelegate,UICollectio
 
 class MainListTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollectionViewDataSource{
     
+    private let disposeBag = DisposeBag()
+    
+    func fetchNews(){
+        ApiClient.getArticleNews()
+        .observeOn(MainScheduler.instance)
+        .subscribe(
+            
+            onNext: { news in
+                self.newsList = news
+                
+            },
+            onError: { err in
+                switch err {
+                case ApiError.conflict:
+                    print("Conflict error")
+                case ApiError.forbidden:
+                    print("Forbidden error")
+                case ApiError.notFound:
+                    print("Not found error")
+                default:
+                    print("Unknown error:", err)
+                }
+                
+            },
+            onCompleted: {
+                self.collectionview.reloadData()
+        }
+            
+            
+        ).disposed(by: disposeBag)
+    }
+    
    
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -416,7 +448,7 @@ class MainListTableViewCell : UITableViewCell,UICollectionViewDelegate,UICollect
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        fetchNews()
         
     }
     
