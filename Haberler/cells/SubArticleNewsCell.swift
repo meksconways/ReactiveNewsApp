@@ -72,6 +72,16 @@ UICollectionViewDelegateFlowLayout{
         
     }()
     
+    let viewAllBtn: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Tümünü Gör", for: UIControl.State.normal)
+        button.titleLabel?.font =  UIFont(name: "Dosis-SemiBold", size: 14)
+        button.contentHorizontalAlignment = .right
+        button.setTitleColor(UIColor(rgb: 0x797979), for: UIControl.State.normal)
+        return button
+    }()
+    
     let subCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
@@ -94,10 +104,18 @@ UICollectionViewDelegateFlowLayout{
         
         addSubview(subCollectionView)
         addSubview(title)
+        addSubview(viewAllBtn)
+        
+        viewAllBtn.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
+            make.width.equalTo(100)
+        }
+        
         title.snp.makeConstraints { (make) in
             make.top.equalToSuperview().offset(10)
             make.left.equalToSuperview().offset(10)
-            make.right.equalToSuperview().offset(-10)
+            make.right.equalTo(viewAllBtn.snp.left).offset(-10)
         }
         subCollectionView.snp.makeConstraints { (make) in
             make.left.equalToSuperview()
@@ -131,6 +149,7 @@ class SubArticlesNewsCollectionViewCell: UICollectionViewCell {
     
     let newsImage: UIImageView = {
         let image = UIImageView()
+        image.backgroundColor = UIColor(rgb: 0xa0a0a0)
         image.translatesAutoresizingMaskIntoConstraints = false
         image.contentMode = .scaleAspectFill
         return image

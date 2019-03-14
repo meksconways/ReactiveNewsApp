@@ -57,12 +57,11 @@ UICollectionViewDelegateFlowLayout{
     let title: UILabel = {
         
         let label = UILabel()
-        //label.font = UIFont.systemFont(ofSize: 20.0, weight: UIFont.Weight.semibold)
         label.font = UIFont(name: "Dosis-SemiBold", size: 20)
         label.textColor = UIColor(rgb: 0x323232)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Tüm Haberler"
-        label.numberOfLines = 0 // sıfır kısıtlama olmaması demek, satır sayısını kıstlamaz sınırsız satır olabilir demek gibi bişey
+        label.numberOfLines = 0
         return label
         
     }()
@@ -136,7 +135,7 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
         gradient = CAGradientLayer()
         gradient.frame = newsImage.bounds
         gradient.colors = [UIColor.black.cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.black.cgColor]
-        gradient.locations = [0.9,1.0]
+        gradient.locations = [0.8,1.0]
         newsImage.layer.mask = gradient
         
         mainView.snp.makeConstraints { (make) in
@@ -155,7 +154,7 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
         }
         
         graView.snp.makeConstraints { (make) in
-            make.top.equalTo(subView.snp.centerY)
+            make.top.equalToSuperview()
             make.left.equalToSuperview()
             make.right.equalToSuperview()
             make.bottom.equalToSuperview()
@@ -196,6 +195,7 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
     let graView : UIView = {
         
         let view = UIView()
+        view.backgroundColor = UIColor(rgb: 0x000000).withAlphaComponent(0.3)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
         
@@ -215,7 +215,7 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
     let title: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont(name: "Dosis-Bold", size: 22)
+        label.font = UIFont(name: "Dosis-SemiBold", size: 22)
         label.textColor = UIColor(rgb: 0xffffff)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.numberOfLines = 0

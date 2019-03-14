@@ -34,6 +34,10 @@
 		FA9559382239382000A7A84A /* ArticlesNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9559372239382000A7A84A /* ArticlesNewsCell.swift */; };
 		FA95593A2239567000A7A84A /* SubArticleNewsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9559392239567000A7A84A /* SubArticleNewsCell.swift */; };
 		FA95593C223974F100A7A84A /* MainTabBarControllerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA95593B223974F100A7A84A /* MainTabBarControllerViewController.swift */; };
+		FA95594022399F8900A7A84A /* ColumnController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA95593F22399F8900A7A84A /* ColumnController.swift */; };
+		FA9559422239A1B300A7A84A /* ColumnNewsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9559412239A1B300A7A84A /* ColumnNewsCollectionViewCell.swift */; };
+		FA9559442239A31900A7A84A /* ColumnModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9559432239A31900A7A84A /* ColumnModel.swift */; };
+		FA955946223A91AB00A7A84A /* GalleryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA955945223A91AB00A7A84A /* GalleryController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -93,6 +97,10 @@
 		FA9559372239382000A7A84A /* ArticlesNewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArticlesNewsCell.swift; sourceTree = "<group>"; };
 		FA9559392239567000A7A84A /* SubArticleNewsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubArticleNewsCell.swift; sourceTree = "<group>"; };
 		FA95593B223974F100A7A84A /* MainTabBarControllerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabBarControllerViewController.swift; sourceTree = "<group>"; };
+		FA95593F22399F8900A7A84A /* ColumnController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnController.swift; sourceTree = "<group>"; };
+		FA9559412239A1B300A7A84A /* ColumnNewsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnNewsCollectionViewCell.swift; sourceTree = "<group>"; };
+		FA9559432239A31900A7A84A /* ColumnModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnModel.swift; sourceTree = "<group>"; };
+		FA955945223A91AB00A7A84A /* GalleryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +240,8 @@
 			children = (
 				FA955934223929C900A7A84A /* MainViewController.swift */,
 				FA95593B223974F100A7A84A /* MainTabBarControllerViewController.swift */,
+				FA95593F22399F8900A7A84A /* ColumnController.swift */,
+				FA955945223A91AB00A7A84A /* GalleryController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -251,6 +261,7 @@
 			children = (
 				FA63A9402226F70700E0C4FE /* Post.swift */,
 				FA63A946222700D700E0C4FE /* ArticleNewsModel.swift */,
+				FA9559432239A31900A7A84A /* ColumnModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -260,6 +271,7 @@
 			children = (
 				FA9559372239382000A7A84A /* ArticlesNewsCell.swift */,
 				FA9559392239567000A7A84A /* SubArticleNewsCell.swift */,
+				FA9559412239A1B300A7A84A /* ColumnNewsCollectionViewCell.swift */,
 			);
 			path = cells;
 			sourceTree = "<group>";
@@ -508,12 +520,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA63A9062226EA1A00E0C4FE /* ViewController.swift in Sources */,
+				FA9559422239A1B300A7A84A /* ColumnNewsCollectionViewCell.swift in Sources */,
 				FA63A9042226EA1A00E0C4FE /* AppDelegate.swift in Sources */,
 				FA95593A2239567000A7A84A /* SubArticleNewsCell.swift in Sources */,
 				FA63A93E2226F47F00E0C4FE /* ApiRouter.swift in Sources */,
 				FA63A947222700D700E0C4FE /* ArticleNewsModel.swift in Sources */,
+				FA955946223A91AB00A7A84A /* GalleryController.swift in Sources */,
 				FA63A9452226F7FD00E0C4FE /* ApiClient.swift in Sources */,
+				FA95594022399F8900A7A84A /* ColumnController.swift in Sources */,
 				FA63A9412226F70700E0C4FE /* Post.swift in Sources */,
+				FA9559442239A31900A7A84A /* ColumnModel.swift in Sources */,
 				FA63A90C2226EA1A00E0C4FE /* Haberler.xcdatamodeld in Sources */,
 				FA63A93C2226F41B00E0C4FE /* Constants.swift in Sources */,
 				FA9559382239382000A7A84A /* ArticlesNewsCell.swift in Sources */,

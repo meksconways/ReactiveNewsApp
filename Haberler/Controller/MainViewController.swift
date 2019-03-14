@@ -76,7 +76,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
             cell.pathName = "Magazin Haberleri"
             cell.subNews = self.news.filter({ (element) -> Bool in
-                element.path.contains("magazin")
+                element.path.contains("magazin") || element.path.contains("kelebek")
             })
             return cell
             

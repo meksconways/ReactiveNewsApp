@@ -20,6 +20,10 @@ class ApiClient {
         return request(ApiRouter.getAllArticleNews())
     }
     
+    static func getColumnNews() -> Observable<[ColumnModelElement]>{
+        return request(ApiRouter.getColumnNews())
+    }
+    
     //-------------------------------------------------------------------------------------------------
     //MARK: - The request function to get results in an Observable
     private static func request<T: Codable> (_ urlConvertible: URLRequestConvertible) -> Observable<T> {

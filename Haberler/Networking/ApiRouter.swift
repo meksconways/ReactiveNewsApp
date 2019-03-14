@@ -13,6 +13,7 @@ enum ApiRouter : URLRequestConvertible{
     
     case getPosts(userId: Int)
     case getAllArticleNews()
+    case getColumnNews()
     
     //MARK: - URLRequestConvertible
     func asURLRequest() throws -> URLRequest {
@@ -49,6 +50,8 @@ enum ApiRouter : URLRequestConvertible{
             return .get
         case .getAllArticleNews:
             return .get
+        case .getColumnNews():
+            return .get
         }
     }
     
@@ -60,6 +63,8 @@ enum ApiRouter : URLRequestConvertible{
             return "posts"
         case .getAllArticleNews():
             return "articles"
+        case .getColumnNews():
+            return "columns"
         }
     }
     
@@ -71,6 +76,8 @@ enum ApiRouter : URLRequestConvertible{
             //A dictionary of the key (From the constants file) and its value is returned
             return [Constants.Parameters.userId : userId]
         case .getAllArticleNews:
+            return [:]
+        case .getColumnNews():
             return [:]
         }
     }
