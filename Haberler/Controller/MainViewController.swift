@@ -30,6 +30,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         let layout = UICollectionViewFlowLayout()
         let detailController = NewsDetailController(collectionViewLayout: layout)
+        detailController.newsId = newsID
         navigationController?.pushViewController(detailController, animated: true)
         
     }

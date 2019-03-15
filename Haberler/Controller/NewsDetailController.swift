@@ -8,16 +8,19 @@
 
 import UIKit
 import SnapKit
+import RxSwift
+import Kingfisher
 class NewsDetailController: UICollectionViewController,
 UICollectionViewDelegateFlowLayout{
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        print(self.newsId!)
         collectionView.register(HeaderCell.self, forCellWithReuseIdentifier: "headerid")
-        //self.title = "Haber Detay"
+        collectionView.register(TitleCell.self, forCellWithReuseIdentifier: "titleid")
         collectionView.contentInsetAdjustmentBehavior = .never
         collectionView.backgroundColor = UIColor.white
+        getNewsDetail()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -37,16 +40,84 @@ UICollectionViewDelegateFlowLayout{
 
     }
     
+    private let disposeBag = DisposeBag()
+    var newsDetailModel: NewsDetailModel?
+    func getNewsDetail(){
+        ApiClient.getNewsDetail(newsId: newsId!)
+        .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { (newsDetail) in
+                print(newsDetail)
+                self.newsDetailModel = newsDetail
+            }, onError: { (error) in
+                // todo sc
+            }, onCompleted: {
+                self.collectionView.reloadData()
+            })
+        .disposed(by: disposeBag)
+    }
+    
+    var newsId: String?
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: self.view.bounds.width * 3 / 4)
+        
+        if indexPath.section == 0 {
+            return CGSize(width: self.view.bounds.width, height: self.view.bounds.width * 3 / 4)
+        }else{
+            return CGSize(width: self.view.bounds.width, height: 60)
+        }
+        
+        
     }
+    
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "headerid", for: indexPath) as! HeaderCell
-        return cell
+        
+        if indexPath.section == 0 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "headerid", for: indexPath) as! HeaderCell
+            cell.model = self.newsDetailModel
+            return cell
+        }else{
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "titleid", for: indexPath) as! TitleCell
+            cell.titleModel = self.newsDetailModel
+            return cell
+        }
+        
+        
     }
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
+    }
+}
+
+class TitleCell: BaseCell {
+    
+    var titleModel: NewsDetailModel?{
+        didSet{
+             title.text = titleModel?.title
+        }
+    }
+    
+    let title: UILabel = {
+       let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont(name: "Dosis-Bold", size: 22)
+        label.text = "Haberlerde BuGün\nmerhaba"
+        label.textColor = UIColor(rgb: 0x323232)
+        label.numberOfLines = 2
+        return label
+    }()
+    
+    override func setupUI() {
+        super.setupUI()
+        addSubview(title)
+        title.snp.makeConstraints { (make) in
+            make.top.equalToSuperview()
+            make.left.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
+        }
     }
 }
 
@@ -55,26 +126,31 @@ class HeaderCell: BaseCell,
     UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout{
     
-    
+    var model: NewsDetailModel?{
+        didSet{
+            self.collectionV.reloadData()
+        }
+    }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        if let count = model?.files.count {
+            self.pageController.numberOfPages = count
+            return count
+            
+        }
+        self.pageController.numberOfPages = 0
+        return 0
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.bounds.width, height: self.bounds.width * 3 / 4)
     }
     
-    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-       // self.pageController.currentPage = indexPath.item
-    }
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        
         pageController.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
     }
     
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        
         pageController.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
     }
     
@@ -83,12 +159,12 @@ UICollectionViewDelegateFlowLayout{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionV.dequeueReusableCell(withReuseIdentifier: "headerphotoid", for: indexPath)
             as! NewsDetailHeaderPhotoCollectionViewCell
+        cell.model = self.model?.files[indexPath.item]
         return cell
     }
     
     let pageController: UIPageControl = {
         let pc = UIPageControl()
-        pc.numberOfPages = 3
         pc.isEnabled = false
         pc.translatesAutoresizingMaskIntoConstraints = false
         pc.hidesForSinglePage = true
@@ -135,10 +211,17 @@ class NewsDetailHeaderPhotoCollectionViewCell : BaseCell{
         let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.contentMode = .scaleAspectFill
-        iv.image = UIImage(named: "bgi_2")
+        iv.backgroundColor = UIColor(rgb: 0xd9d9d9)
         return iv
     }()
     
+    var model: File?{
+        didSet{
+          
+            let url = URL(string: (model?.fileURL)!)!
+            imageView.kf.setImage(with: url)
+        }
+    }
     
     
     override func setupUI() {

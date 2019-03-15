@@ -18,6 +18,7 @@ struct Constants{
     //The parameters (Queries) that we're gonna use
     struct Parameters {
         static let userId = "userId"
+        static let newsId = "Id"
     }
     
     //The header fields

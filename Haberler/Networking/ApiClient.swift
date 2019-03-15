@@ -28,6 +28,10 @@ class ApiClient {
         return request(ApiRouter.getGalleryNews())
     }
     
+    static func getNewsDetail(newsId: String) -> Observable<NewsDetailModel>{
+        return request(ApiRouter.getNewsDetail(newsId: newsId))
+    }
+    
     //-------------------------------------------------------------------------------------------------
     //MARK: - The request function to get results in an Observable
     private static func request<T: Codable> (_ urlConvertible: URLRequestConvertible) -> Observable<T> {
