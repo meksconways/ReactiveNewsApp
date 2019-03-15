@@ -39,7 +39,7 @@ UICollectionViewDelegateFlowLayout{
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: self.view.bounds.width * 4 / 4)
+        return CGSize(width: self.view.bounds.width, height: self.view.bounds.width * 3 / 4)
     }
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "headerid", for: indexPath) as! HeaderCell
@@ -50,15 +50,96 @@ UICollectionViewDelegateFlowLayout{
     }
 }
 
-class HeaderCell: BaseCell{
+class HeaderCell: BaseCell,
+    UICollectionViewDelegate,
+    UICollectionViewDataSource,
+UICollectionViewDelegateFlowLayout{
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: self.bounds.width, height: self.bounds.width * 3 / 4)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+       // self.pageController.currentPage = indexPath.item
+    }
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        
+        pageController.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+    }
+    
+    func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
+        
+        pageController.currentPage = Int(scrollView.contentOffset.x) / Int(scrollView.frame.width)
+    }
+    
+   
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionV.dequeueReusableCell(withReuseIdentifier: "headerphotoid", for: indexPath)
+            as! NewsDetailHeaderPhotoCollectionViewCell
+        return cell
+    }
+    
+    let pageController: UIPageControl = {
+        let pc = UIPageControl()
+        pc.numberOfPages = 3
+        pc.isEnabled = false
+        pc.translatesAutoresizingMaskIntoConstraints = false
+        pc.hidesForSinglePage = true
+        pc.currentPageIndicatorTintColor = UIColor.white
+        pc.pageIndicatorTintColor = UIColor.white.withAlphaComponent(0.4)
+        return pc
+    }()
+    
+    let collectionV: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumInteritemSpacing = 0
+        layout.minimumLineSpacing = 0
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.backgroundColor = .clear
+        collectionView.flashScrollIndicators()
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.isPagingEnabled = true
+        return collectionView
+    }()
+    
+    
+    override func setupUI() {
+        super.setupUI()
+        addSubview(collectionV)
+        addSubview(pageController)
+        collectionV.register(NewsDetailHeaderPhotoCollectionViewCell.self, forCellWithReuseIdentifier: "headerphotoid")
+        collectionV.delegate = self
+        collectionV.dataSource = self
+        collectionV.snp.makeConstraints { (make) in
+            make.size.equalToSuperview()
+        }
+        pageController.snp.makeConstraints { (make) in
+            make.bottom.equalToSuperview().offset(-5)
+            make.centerX.equalToSuperview()
+        }
+    }
+}
+
+class NewsDetailHeaderPhotoCollectionViewCell : BaseCell{
     
     let imageView: UIImageView = {
-       let iv = UIImageView()
+        let iv = UIImageView()
         iv.translatesAutoresizingMaskIntoConstraints = false
         iv.contentMode = .scaleAspectFill
         iv.image = UIImage(named: "bgi_2")
         return iv
     }()
+    
+    
     
     override func setupUI() {
         super.setupUI()
@@ -68,6 +149,7 @@ class HeaderCell: BaseCell{
             make.size.equalToSuperview()
         }
     }
+    
 }
 
 class BaseCell: UICollectionViewCell{
