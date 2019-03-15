@@ -14,6 +14,7 @@ enum ApiRouter : URLRequestConvertible{
     case getPosts(userId: Int)
     case getAllArticleNews()
     case getColumnNews()
+    case getGalleryNews()
     
     //MARK: - URLRequestConvertible
     func asURLRequest() throws -> URLRequest {
@@ -52,6 +53,8 @@ enum ApiRouter : URLRequestConvertible{
             return .get
         case .getColumnNews():
             return .get
+        case .getGalleryNews:
+            return .get
         }
     }
     
@@ -65,6 +68,8 @@ enum ApiRouter : URLRequestConvertible{
             return "articles"
         case .getColumnNews():
             return "columns"
+        case .getGalleryNews:
+            return "newsphotogalleries"
         }
     }
     
@@ -78,6 +83,8 @@ enum ApiRouter : URLRequestConvertible{
         case .getAllArticleNews:
             return [:]
         case .getColumnNews():
+            return [:]
+        case .getGalleryNews:
             return [:]
         }
     }

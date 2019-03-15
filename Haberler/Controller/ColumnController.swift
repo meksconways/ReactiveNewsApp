@@ -9,19 +9,52 @@
 import UIKit
 import RxSwift
 class ColumnController: UICollectionViewController,
-UICollectionViewDelegateFlowLayout{
+UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate{
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Dosis-SemiBold", size: 20)!]
         self.navigationController?.navigationBar.barStyle = .black
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.barTintColor = UIColor(rgb: 0xc54545)
         collectionView.backgroundColor = UIColor.white
+        self.tabBarController?.delegate = self
         collectionView.register(ColumnNewsCollectionViewCell.self, forCellWithReuseIdentifier: "cellid")
         self.title = "Köşe Yazıları"
         getColumnNews()
         
     }
+    
+    private var selectingCount:Int = 0
+    private var alreadyRoot:Bool = true //singleton
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        let tabBarIndex = tabBarController.selectedIndex
+
+        if tabBarIndex == 2 {
+            selectingCount += 1
+
+            if alreadyRoot{
+                self.collectionView.setContentOffset(CGPoint.zero, animated: true)
+                alreadyRoot = false
+                return
+            }
+
+            if selectingCount > 1{
+                if tabBarController.selectedViewController?.navigationItem.title == "Köşe Yazıları"{
+                    self.collectionView.setContentOffset(CGPoint.zero, animated: true)
+                }else{
+                    selectingCount -= 1
+                }
+
+            }
+
+        }else{
+            selectingCount = 0
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.view.bounds.width, height: 100)
     }

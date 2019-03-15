@@ -8,8 +8,8 @@
 
 import UIKit
 import RxSwift
-class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
-
+class MainViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate {
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Dosis-SemiBold", size: 20)!]
@@ -17,10 +17,52 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.barTintColor = UIColor(rgb: 0xc54545)
         collectionView.backgroundColor = UIColor.white
+        self.navigationController?.navigationBar.tintColor = UIColor.white
+        self.tabBarController?.delegate = self
         collectionView.register(ArticlesNewsCell.self, forCellWithReuseIdentifier: cellID)
         collectionView.register(SubArticleNewsCell.self, forCellWithReuseIdentifier: subCellID)
         self.title = "Haberler"
+        
         getAllNews()
+    }
+    
+    func showNewsDetail(newsID:String) {
+        
+        let layout = UICollectionViewFlowLayout()
+        let detailController = NewsDetailController(collectionViewLayout: layout)
+        navigationController?.pushViewController(detailController, animated: true)
+        
+    }
+    
+    
+    private var selectingCount:Int = 0
+    private var alreadyRoot:Bool = true //singleton
+    
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        
+        let tabBarIndex = tabBarController.selectedIndex
+        
+        if tabBarIndex == 0 {
+            selectingCount += 1
+            
+            if alreadyRoot{
+                self.collectionView.setContentOffset(CGPoint.zero, animated: true)
+                alreadyRoot = false
+                return
+            }
+            
+            if selectingCount > 1{
+                if tabBarController.selectedViewController?.navigationItem.title == "Haberler"{
+                    self.collectionView.setContentOffset(CGPoint.zero, animated: true)
+                }else{
+                    selectingCount -= 1
+                }
+                
+            }
+            
+        }else{
+            selectingCount = 0
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -33,7 +75,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         
         
     }
-
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 1
     }
@@ -45,11 +87,13 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         if indexPath.section == 0 {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as! ArticlesNewsCell
             cell.newsList = self.news
+            cell.mainViewController = self
             return cell
         }
         else if indexPath.section == 2{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
             cell.pathName = "Dünya Haberleri"
+            cell.mainViewController = self
             cell.subNews = self.news.filter({ (element) -> Bool in
                 element.path == "/dunya/"
             })
@@ -58,6 +102,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         else if indexPath.section == 1{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
             cell.pathName = "Spor Haberleri"
+            cell.mainViewController = self
             cell.subNews = self.news.filter({ (element) -> Bool in
                 element.path.contains("spor")
             })
@@ -66,6 +111,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         else if indexPath.section == 3{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
             cell.pathName = "Gündem Haberleri"
+            cell.mainViewController = self
             cell.subNews = self.news.filter({ (element) -> Bool in
                 element.path == "/gundem/"
             })
@@ -75,6 +121,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         else if indexPath.section == 4{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
             cell.pathName = "Magazin Haberleri"
+            cell.mainViewController = self
             cell.subNews = self.news.filter({ (element) -> Bool in
                 element.path.contains("magazin") || element.path.contains("kelebek")
             })
@@ -84,12 +131,13 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
         else{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: subCellID, for: indexPath) as! SubArticleNewsCell
             cell.pathName = "Gündem Haberleri"
+            cell.mainViewController = self
             cell.subNews = self.news.filter({ (element) -> Bool in
                 element.path == "/gundem/"
             })
             return cell
         }
-    
+        
         
     }
     let subCellID: String = "subCellID"
@@ -117,12 +165,7 @@ class MainViewController: UICollectionViewController, UICollectionViewDelegateFl
                         print("Unknown error:", error)
                     }
             }, onCompleted: {
-                // hide progress
                 self.collectionView.reloadData()
-                //self.table_view.reloadData()
-                //let cell = self.table_view.dequeueReusableCell(withIdentifier: "SporCell") as! SubNewsTableViewCell
-                //cell.setData(model: self.news)
-                
             })
             .disposed(by: disposeBag)
     }

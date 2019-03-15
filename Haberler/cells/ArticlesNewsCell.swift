@@ -14,6 +14,15 @@ UICollectionViewDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegateFlowLayout{
     
+    var mainViewController: MainViewController?
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let model = newsList?[indexPath.item]{
+            mainViewController?.showNewsDetail(newsID: model.id)
+        }
+        
+    }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: self.bounds.width, height: self.bounds.width * 10 / 16)
     }
@@ -40,6 +49,7 @@ UICollectionViewDelegateFlowLayout{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
+        //mainViewController.sel
         setupUI()
     }
     
@@ -106,6 +116,8 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
         super.init(frame: frame)
         setupUI()
     }
+    
+    
     
     override func layoutSubviews() {
         gradient.frame = newsImage.bounds
