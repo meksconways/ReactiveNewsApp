@@ -49,7 +49,6 @@ UICollectionViewDelegateFlowLayout{
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        //mainViewController.sel
         setupUI()
     }
     
@@ -120,7 +119,8 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
     
     
     override func layoutSubviews() {
-        gradient.frame = newsImage.bounds
+        gradient.frame = newsImage.frame
+        newsImage.layer.addSublayer(gradient)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -137,6 +137,8 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
     
     private var gradient: CAGradientLayer!
     
+    
+    
     func setupUI(){
         addSubview(mainView)
         mainView.addSubview(subView)
@@ -145,10 +147,11 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
         subView.addSubview(title)
         
         gradient = CAGradientLayer()
-        gradient.frame = newsImage.bounds
-        gradient.colors = [UIColor.black.cgColor, UIColor.clear.cgColor, UIColor.clear.cgColor, UIColor.black.cgColor]
-        gradient.locations = [0.8,1.0]
-        newsImage.layer.mask = gradient
+        gradient.frame = newsImage.frame
+        gradient.colors = [UIColor.clear.cgColor, UIColor.black.withAlphaComponent(0.8).cgColor]
+        gradient.locations = [0,1]
+        
+        
         
         mainView.snp.makeConstraints { (make) in
             make.size.equalToSuperview()
@@ -207,7 +210,7 @@ class ArticleNewsCollectionViewCell: UICollectionViewCell {
     let graView : UIView = {
         
         let view = UIView()
-        view.backgroundColor = UIColor(rgb: 0x000000).withAlphaComponent(0.3)
+        //view.backgroundColor = UIColor(rgb: 0x000000).withAlphaComponent(0.3)
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
         
