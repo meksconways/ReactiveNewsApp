@@ -17,14 +17,31 @@ UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate{
         self.navigationController?.navigationBar.barStyle = .black
         self.navigationController?.navigationBar.isTranslucent = false
         self.navigationController?.navigationBar.barTintColor = UIColor(rgb: 0xc54545)
+        let backButton = UIBarButtonItem()
+        backButton.title = ""
+        self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
         collectionView.backgroundColor = UIColor.white
+        self.navigationController?.navigationBar.tintColor = UIColor.white
         self.tabBarController?.delegate = self
         collectionView.register(ColumnNewsCollectionViewCell.self, forCellWithReuseIdentifier: "cellid")
         self.title = "Köşe Yazıları"
+        self.view.addSubview(indicator)
+        indicator.center = self.view.center
+        indicator.hidesWhenStopped = true
+        indicator.startAnimating()
         getColumnNews()
         
     }
     
+    
+    func showColumnDetail(newsId: String, writerName:String){
+        let controller = ColumnDetailController()
+        controller.newsId = newsId
+        controller.writerName = writerName
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
+    let indicator = UIActivityIndicatorView(style: .gray)
     private var selectingCount:Int = 0
     private var alreadyRoot:Bool = true //singleton
     
@@ -59,6 +76,10 @@ UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate{
         return CGSize(width: self.view.bounds.width, height: 100)
     }
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.showColumnDetail(newsId: self.columnNews[indexPath.item].id, writerName: self.columnNews[indexPath.item].fullname)
+    }
+    
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return columnNews.count
     }
@@ -90,7 +111,11 @@ UICollectionViewDelegateFlowLayout, UITabBarControllerDelegate{
                     print("Unknown error:", error)
                 }
             }, onCompleted: {
-                self.collectionView.reloadData()
+                self.indicator.stopAnimating()
+                UIView.transition(with: self.collectionView,
+                                  duration: 0.4,
+                                  options: .transitionCrossDissolve,
+                                  animations: { self.collectionView.reloadData() })
             })
             
             .disposed(by: disposeBag)

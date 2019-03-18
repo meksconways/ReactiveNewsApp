@@ -23,6 +23,9 @@ class ColumnNewsCollectionViewCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    
+    
+    
     var columnNews: ColumnModelElement?{
         didSet{
             title.text = columnNews?.title
@@ -32,8 +35,8 @@ class ColumnNewsCollectionViewCell: UICollectionViewCell {
                 let imageURL = URL(string: columnNews!.files[0].fileURL)!
                 imageView.kf.setImage(with: imageURL)
             }else{
-                imageView.tintColor = UIColor.white
-                imageView.image = UIImage(named: "person")
+                
+                imageView.image = UIImage(named: "writerplaceholder")
             }
             
         }

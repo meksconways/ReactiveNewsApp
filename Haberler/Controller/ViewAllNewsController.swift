@@ -19,9 +19,14 @@ class ViewAllNewsController: UICollectionViewController,UICollectionViewDelegate
         collectionView.backgroundColor = UIColor.white
         collectionView.register(ViewAllNewsCollectionViewCell.self, forCellWithReuseIdentifier: "cellid")
         self.title = pageTitle
-       
+        self.view.addSubview(indicator)
+        indicator.hidesWhenStopped = true
+        indicator.startAnimating()
+        indicator.center = self.view.center
         fetchNews()
     }
+    
+    let indicator = UIActivityIndicatorView(style: .gray)
     
     var pageTitle: String?
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -35,6 +40,7 @@ class ViewAllNewsController: UICollectionViewController,UICollectionViewDelegate
         cell.model = self.filteredNews[indexPath.item]
         return cell
     }
+   
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.filteredNews.count
@@ -87,7 +93,14 @@ class ViewAllNewsController: UICollectionViewController,UICollectionViewDelegate
                             ((element.files?.count)! > 0 && element.contentType == "Article")
                         })
                     }
-                    self.collectionView.reloadData()
+                    self.indicator.stopAnimating()
+                    
+                    
+                    UIView.transition(with: self.collectionView,
+                                      duration: 0.4,
+                                      options: .transitionCrossDissolve,
+                                      animations: { self.collectionView.reloadData() })
+                    //self.collectionView.reloadData()
                 }
                 
             }

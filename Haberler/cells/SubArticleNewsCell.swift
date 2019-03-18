@@ -65,7 +65,7 @@ UICollectionViewDelegateFlowLayout{
             case "Spor Haberleri":
                 self.mainViewController?.showAllCategoryNews(keyword: "spor",pageTitle:"Spor")
             case "Dünya Haberleri":
-                self.mainViewController?.showAllCategoryNews(keyword: "sinema",pageTitle:"Dünya")
+                self.mainViewController?.showAllCategoryNews(keyword: "dunya",pageTitle:"Dünya")
             case "Gündem Haberleri":
                 self.mainViewController?.showAllCategoryNews(keyword: "gundem", pageTitle:"Gündem")
             case "Magazin Haberleri":

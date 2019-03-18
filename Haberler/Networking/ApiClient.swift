@@ -32,7 +32,9 @@ class ApiClient {
         return request(ApiRouter.getNewsDetail(newsId: newsId))
     }
     
-    
+    static func getColumnDetail(newsId: String) -> Observable<ColumnDetailModel>{
+        return request(ApiRouter.getColumnDetail(newsId: newsId))
+    }
     
     //-------------------------------------------------------------------------------------------------
     //MARK: - The request function to get results in an Observable

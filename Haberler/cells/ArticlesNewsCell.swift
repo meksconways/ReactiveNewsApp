@@ -38,6 +38,8 @@ UICollectionViewDelegateFlowLayout{
         return 0
     }
     
+    
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = articleCollectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! ArticleNewsCollectionViewCell
         cell.news = self.newsList?[indexPath.item]
@@ -58,8 +60,11 @@ UICollectionViewDelegateFlowLayout{
     
     var newsList:[ArticleNewsModelElement]?{
         didSet{
-            
-          self.articleCollectionView.reloadData()
+            UIView.transition(with: self.articleCollectionView,
+                              duration: 0.4,
+                              options: .transitionCrossDissolve,
+                              animations: { self.articleCollectionView.reloadData() })
+         // self.articleCollectionView.reloadData()
             
         }
     }
