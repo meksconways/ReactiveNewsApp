@@ -10,6 +10,8 @@ import UIKit
 import RxSwift
 import Kingfisher
 import SnapKit
+import RxAtomic
+import RxCocoa
 class ColumnDetailController: UITableViewController {
 
     override func viewDidLoad() {
@@ -20,9 +22,16 @@ class ColumnDetailController: UITableViewController {
         tableView.register(ColumnDetailCell.self, forCellReuseIdentifier: "cellid")
         tableView.separatorStyle = .none
         tableView.allowsSelection = false
+        indicator.hidesWhenStopped = true
+        self.view.addSubview(indicator)
+        indicator.center = self.view.center
+        indicator.startAnimating()
         getDetail()
         
     }
+    
+    let indicator = UIActivityIndicatorView(style: .gray)
+    
     var writerName: String!
     var newsId: String!
     var detailModel: ColumnDetailModel?
@@ -30,8 +39,9 @@ class ColumnDetailController: UITableViewController {
     func getDetail(){
         ApiClient.getColumnDetail(newsId: newsId)
         .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (detail) in
-                self.detailModel = detail
+            .subscribe(onNext: { [weak self] (detail) in
+                self?.detailModel = detail
+                
             }, onError: { (error) in
                 switch error {
                 case ApiError.conflict:
@@ -44,7 +54,8 @@ class ColumnDetailController: UITableViewController {
                     print("Unknown error:", error)
                 }
             }, onCompleted: {
-                self.tableView.reloadData()
+                self.indicator.stopAnimating()
+               self.tableView.reloadData()
             })
         .disposed(by: disposeBag)
     }

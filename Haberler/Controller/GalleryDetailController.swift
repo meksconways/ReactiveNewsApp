@@ -1,154 +1,140 @@
 //
-//  GalleryController.swift
+//  GalleryDetailController.swift
 //  Haberler
 //
-//  Created by macbook  on 14.03.2019.
+//  Created by macbook  on 18.03.2019.
 //  Copyright © 2019 meksconway. All rights reserved.
 //
 
-import Foundation
 import UIKit
-import RxSwift
-class GalleryController: UICollectionViewController,
-UICollectionViewDelegateFlowLayout,UITabBarControllerDelegate{
+class GalleryDetailController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.navigationController?.navigationBar.titleTextAttributes = [NSAttributedString.Key.font: UIFont(name: "Dosis-SemiBold", size: 20)!]
-        self.navigationController?.navigationBar.barStyle = .black
-        self.navigationController?.navigationBar.isTranslucent = false
-        self.navigationController?.navigationBar.barTintColor = UIColor(rgb: 0xc54545)
+        self.title = "Haber Detay"
+        tableView.backgroundColor = UIColor.white
         let backButton = UIBarButtonItem()
         backButton.title = ""
         self.navigationController?.navigationBar.topItem?.backBarButtonItem = backButton
-        collectionView.backgroundColor = UIColor.white
-        self.navigationController?.navigationBar.tintColor = UIColor.white
-        self.tabBarController?.delegate = self
-        indicator.hidesWhenStopped = true
-        self.view.addSubview(indicator)
-        indicator.center = self.view.center
-        indicator.startAnimating()
-        collectionView.register(GalleryCollectionViewCell.self, forCellWithReuseIdentifier: "cellid")
-        self.title = "Haber Galerisi"
-        getGalleryNews()
-    }
-    
-    let indicator = UIActivityIndicatorView(style: .gray)
-    
-    private var selectingCount:Int = 0
-    private var alreadyRoot:Bool = true //singleton
-    
-    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        tableView.register(GalleryDetailHeaderCell.self, forCellReuseIdentifier: "headerid")
+        tableView.register(GalleryDetailMiddleCell.self, forCellReuseIdentifier: "middleid")
+        tableView.separatorStyle = .none
         
-        let tabBarIndex = tabBarController.selectedIndex
-        
-        if tabBarIndex == 1 {
-            selectingCount += 1
-            
-            if alreadyRoot{
-                self.collectionView.setContentOffset(CGPoint.zero, animated: true)
-                alreadyRoot = false
-                return
-            }
-            
-            if selectingCount > 1{
-                if tabBarController.selectedViewController?.navigationItem.title == "Haber Galerisi"{
-                    self.collectionView.setContentOffset(CGPoint.zero, animated: true)
-                }else{
-                    selectingCount -= 1
-                }
-                
-            }
-            
-        }else{
-            selectingCount = 0
-        }
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: self.view.bounds.width, height: self.view.bounds.width * 1 / 2 + 40)
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return galleryNews.count
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cellid", for: indexPath) as! GalleryCollectionViewCell
-        cell.model = self.galleryNews[indexPath.item]
-        return cell
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didHighlightItemAt indexPath: IndexPath) {
-        UIView.animate(withDuration: 0.3) {
-            if let cell = collectionView.cellForItem(at: indexPath) as? GalleryCollectionViewCell {
-                cell.mainView.transform = .init(scaleX: 0.96, y: 0.96)
-            }
-        }
-    }
-    
-    override func collectionView(_ collectionView: UICollectionView, didUnhighlightItemAt indexPath: IndexPath) {
-        UIView.animate(withDuration: 0.3) {
-            if let cell = collectionView.cellForItem(at: indexPath) as? GalleryCollectionViewCell {
-                cell.mainView.transform = .identity
-            }
-        }
-    }
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        showGalleryDetail(model: self.galleryNews[indexPath.item])
-    }
-    
-    func showGalleryDetail(model: GalleryModelElement){
-        let controller = GalleryDetailController()
-        controller.galleryModel = model
+    func showGalleryGrid(files: [FileY]){
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
+        layout.minimumInteritemSpacing = 0
+        let controller = GalleryPhotosController(collectionViewLayout: layout)
+        controller.model = files
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    private let disposeBag = DisposeBag()
-    var galleryNews:[GalleryModelElement] = []
+    override func numberOfSections(in tableView: UITableView) -> Int {
+        return 2
+    }
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 1
+    }
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "headerid", for: indexPath) as! GalleryDetailHeaderCell
+            cell.model = self.galleryModel
+            cell.selectionStyle = .none
+            return cell
+        }else{
+            let cell = tableView.dequeueReusableCell(withIdentifier: "middleid", for: indexPath) as! GalleryDetailMiddleCell
+            cell.model = self.galleryModel
+            cell.controller = self
+            cell.selectionStyle = .none
+            return cell
+        }
+    }
     
-    func getGalleryNews(){
-        ApiClient.getGalleryNews()
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (galleryNews) in
-                self.galleryNews = galleryNews.filter({ (element) -> Bool in
-                    element.files.count > 5
-                })
-            }, onError: { (error) in
-                
-                switch error {
-                case ApiError.conflict:
-                    print("Conflict error")
-                case ApiError.forbidden:
-                    print("Forbidden error")
-                case ApiError.notFound:
-                    print("Not found error")
-                default:
-                    print("Unknown error:", error)
-                }
-            },
-               onCompleted: {
-                self.indicator.stopAnimating()
-                self.collectionView.reloadData()
-            })
-            .disposed(by: disposeBag)
+    var galleryModel:GalleryModelElement?{
+        didSet{
+            self.tableView.reloadData()
+        }
     }
     
     
     
 }
 
-class GalleryCollectionViewCell: UICollectionViewCell{
+class GalleryDetailHeaderCell: BaseCell{
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
+    var model:GalleryModelElement?{
+        didSet{
+            title.text = model?.title
+            if let startDate = model?.createdDate{
+                let inputFormatter = DateFormatter()
+                inputFormatter.locale = Locale(identifier: "tr_TR_POSIX")
+                inputFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+                guard let showDate = inputFormatter.date(from: startDate)else{return} //2019-03-16T20:58:54.906Z
+                inputFormatter.dateFormat = "E, d MMM yyyy HH:mm"
+                let resultString = inputFormatter.string(from: showDate)
+                dateLabel.text = resultString
+            }
+        }
     }
     
-    required init?(coder aDecoder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func setupUI() {
+        super.setupUI()
+        addSubview(title)
+        addSubview(dateLabel)
+        
+        title.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(16)
+            make.left.equalToSuperview().offset(16)
+            make.right.equalToSuperview().offset(-16)
+        }
+        dateLabel.snp.makeConstraints { (make) in
+            make.top.equalTo(title.snp.bottom).offset(8)
+            make.left.equalToSuperview().offset(16)
+            make.right.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview()
+        }
+        
+        
     }
     
+    let title:UILabel = {
+       let label = UILabel()
+        label.textColor = UIColor(rgb: 0x212121)
+        label.font = UIFont(name: "Dosis-Bold", size: 22)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let dateLabel:UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(rgb: 0x797979)
+        label.font = UIFont(name: "Dosis-SemiBold", size: 14)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    let editorLabel:UILabel = {
+        let label = UILabel()
+        label.textColor = UIColor(rgb: 0x797979)
+        label.font = UIFont(name: "Dosis-SemiBold", size: 24)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 0
+        return label
+    }()
+    
+    
+}
+
+class GalleryDetailMiddleCell: BaseCell{
+   
     var model: GalleryModelElement?{
         didSet{
             let imageURL = URL(string: (model?.files[0].fileURL)!)!
@@ -162,13 +148,14 @@ class GalleryCollectionViewCell: UICollectionViewCell{
             iv2.kf.setImage(with: url3)
             iv3.kf.setImage(with: url4)
             iv4.kf.setImage(with: url5)
-            title.text = model?.title
+            title.text = model?.description
             
             photoCountLabel.text = "+ \(model?.files.count ?? 0)"
             
             
         }
     }
+    
     
     
     let mainView: UIView = {
@@ -271,11 +258,11 @@ class GalleryCollectionViewCell: UICollectionViewCell{
     let title: UILabel = {
         
         let label = UILabel()
-        label.font = UIFont(name: "Dosis-SemiBold", size: 18)
+        label.font = UIFont(name: "Dosis-SemiBold", size: 16)
         label.textColor = UIColor(rgb: 0x323232)
         label.text = "Yepyeni Bir İçerik Sizleri Bekliyor"
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.numberOfLines = 1
+        label.numberOfLines = 0
         return label
         
     }()
@@ -298,14 +285,23 @@ class GalleryCollectionViewCell: UICollectionViewCell{
         
     }()
     
+    let goGalleyBtn: UIButton = {
+        let button = UIButton(type: UIButton.ButtonType.system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Galeriye Git >", for: UIControl.State.normal)
+        button.titleLabel?.font =  UIFont(name: "Dosis-Bold", size: 16)
+        button.contentHorizontalAlignment = .right
+        button.setTitleColor(UIColor(rgb: 0xc54545), for: UIControl.State.normal)
+        return button
+    }()
     
-    
-    
-    func setupUI(){
-        
+    var controller: GalleryDetailController?
+    override func setupUI(){
+        super.setupUI()
         addSubview(mainView)
         addSubview(bottomView)
         bottomView.addSubview(title)
+        bottomView.addSubview(goGalleyBtn)
         mainView.addSubview(stackV)
         stackV.addArrangedSubview(bigImage)
         stackV.addArrangedSubview(stackV1)
@@ -319,6 +315,11 @@ class GalleryCollectionViewCell: UICollectionViewCell{
         conView.addSubview(blackView)
         conView.addSubview(photoCountLabel)
         
+        goGalleyBtn.addTapGestureRecognizer {
+            if let files = self.model?.files{
+                self.controller?.showGalleryGrid(files: files)
+            }
+        }
         
         
         iv4.snp.makeConstraints { (make) in
@@ -361,10 +362,16 @@ class GalleryCollectionViewCell: UICollectionViewCell{
             make.top.equalTo(mainView.snp.bottom)
             make.left.equalToSuperview()
             make.right.equalToSuperview()
-            make.width.equalToSuperview()
-            make.height.equalTo(40)
+            make.bottom.equalToSuperview()
+            
         }
         
+        goGalleyBtn.snp.makeConstraints { (make) in
+            make.top.equalTo(title.snp.bottom).offset(8)
+            make.right.equalToSuperview().offset(-16)
+            make.bottom.equalToSuperview().offset(-16)
+            make.width.equalTo(120)
+        }
         
     }
     

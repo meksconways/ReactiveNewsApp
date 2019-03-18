@@ -13,6 +13,9 @@
 		FA0125EF223F1CF40081D5BE /* Animator.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0125EE223F1CF40081D5BE /* Animator.swift */; };
 		FA0125F1223F283C0081D5BE /* ColumnDetailModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0125F0223F283C0081D5BE /* ColumnDetailModel.swift */; };
 		FA0125F3223F29360081D5BE /* ColumnDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0125F2223F29360081D5BE /* ColumnDetailController.swift */; };
+		FA0125F5223FC6730081D5BE /* ApiRequester.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0125F4223FC6730081D5BE /* ApiRequester.swift */; };
+		FA0125F7223FD2670081D5BE /* GalleryDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0125F6223FD2670081D5BE /* GalleryDetailController.swift */; };
+		FA0125F9224031050081D5BE /* GalleryPhotosController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0125F8224031050081D5BE /* GalleryPhotosController.swift */; };
 		FA0B5DAC223DCFC70094CA5C /* ViewAllNewsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0B5DAB223DCFC70094CA5C /* ViewAllNewsController.swift */; };
 		FA0B5DAE223DD36D0094CA5C /* AllCategoriesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA0B5DAD223DD36D0094CA5C /* AllCategoriesModel.swift */; };
 		FA2831EE22276D5D00168107 /* Dosis-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = FA2831E722276D5D00168107 /* Dosis-Light.ttf */; };
@@ -78,6 +81,9 @@
 		FA0125EE223F1CF40081D5BE /* Animator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Animator.swift; sourceTree = "<group>"; };
 		FA0125F0223F283C0081D5BE /* ColumnDetailModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnDetailModel.swift; sourceTree = "<group>"; };
 		FA0125F2223F29360081D5BE /* ColumnDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColumnDetailController.swift; sourceTree = "<group>"; };
+		FA0125F4223FC6730081D5BE /* ApiRequester.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiRequester.swift; sourceTree = "<group>"; };
+		FA0125F6223FD2670081D5BE /* GalleryDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryDetailController.swift; sourceTree = "<group>"; };
+		FA0125F8224031050081D5BE /* GalleryPhotosController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GalleryPhotosController.swift; sourceTree = "<group>"; };
 		FA0B5DAB223DCFC70094CA5C /* ViewAllNewsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewAllNewsController.swift; sourceTree = "<group>"; };
 		FA0B5DAD223DD36D0094CA5C /* AllCategoriesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllCategoriesModel.swift; sourceTree = "<group>"; };
 		FA2831E722276D5D00168107 /* Dosis-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "Dosis-Light.ttf"; path = "../../../../Downloads/Dosis/Dosis-Light.ttf"; sourceTree = "<group>"; };
@@ -270,6 +276,8 @@
 				FA955949223B245D00A7A84A /* NewsDetailController.swift */,
 				FA0B5DAB223DCFC70094CA5C /* ViewAllNewsController.swift */,
 				FA0125F2223F29360081D5BE /* ColumnDetailController.swift */,
+				FA0125F6223FD2670081D5BE /* GalleryDetailController.swift */,
+				FA0125F8224031050081D5BE /* GalleryPhotosController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -280,6 +288,7 @@
 				FA63A93B2226F41B00E0C4FE /* Constants.swift */,
 				FA63A93D2226F47E00E0C4FE /* ApiRouter.swift */,
 				FA63A9442226F7FD00E0C4FE /* ApiClient.swift */,
+				FA0125F4223FC6730081D5BE /* ApiRequester.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -558,15 +567,18 @@
 				FA95594A223B245D00A7A84A /* NewsDetailController.swift in Sources */,
 				FA3BC3B8223BEB87002DE16A /* NewsDetailModel.swift in Sources */,
 				FA95593A2239567000A7A84A /* SubArticleNewsCell.swift in Sources */,
+				FA0125F5223FC6730081D5BE /* ApiRequester.swift in Sources */,
 				FA0125F1223F283C0081D5BE /* ColumnDetailModel.swift in Sources */,
 				FA63A93E2226F47F00E0C4FE /* ApiRouter.swift in Sources */,
 				FA63A947222700D700E0C4FE /* ArticleNewsModel.swift in Sources */,
+				FA0125F9224031050081D5BE /* GalleryPhotosController.swift in Sources */,
 				FA955946223A91AB00A7A84A /* GalleryController.swift in Sources */,
 				FA63A9452226F7FD00E0C4FE /* ApiClient.swift in Sources */,
 				FA0125F3223F29360081D5BE /* ColumnDetailController.swift in Sources */,
 				FA95594022399F8900A7A84A /* ColumnController.swift in Sources */,
 				FA63A9412226F70700E0C4FE /* Post.swift in Sources */,
 				FA9559442239A31900A7A84A /* ColumnModel.swift in Sources */,
+				FA0125F7223FD2670081D5BE /* GalleryDetailController.swift in Sources */,
 				FA955948223AD87400A7A84A /* GalleryModel.swift in Sources */,
 				FA63A90C2226EA1A00E0C4FE /* Haberler.xcdatamodeld in Sources */,
 				FA63A93C2226F41B00E0C4FE /* Constants.swift in Sources */,
@@ -749,7 +761,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 88EBA4EF43283E7BBADB882A /* Pods-Haberler.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-4";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CBF73L93YX;
 				INFOPLIST_FILE = Haberler/Info.plist;
@@ -768,7 +780,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E7A4D03B47F6EE5883B27D0B /* Pods-Haberler.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "AppIcon-4";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = CBF73L93YX;
 				INFOPLIST_FILE = Haberler/Info.plist;

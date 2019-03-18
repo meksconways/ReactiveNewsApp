@@ -13,27 +13,27 @@ import RxSwift
 class ApiClient {
     
     static func getPosts(userId: Int) -> Observable<[Post]> {
-        return request(ApiRouter.getPosts(userId: userId)) // değişti
+        return request(ApiRouter.getPosts(userId: userId)).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background)) // değişti
     }
     
     static func getArticleNews() -> Observable<[ArticleNewsModelElement]>{
-        return request(ApiRouter.getAllArticleNews())
+        return request(ApiRouter.getAllArticleNews()).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
     }
     
     static func getColumnNews() -> Observable<[ColumnModelElement]>{
-        return request(ApiRouter.getColumnNews())
+        return request(ApiRouter.getColumnNews()).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
     }
     
     static func getGalleryNews() -> Observable<[GalleryModelElement]>{
-        return request(ApiRouter.getGalleryNews())
+        return request(ApiRouter.getGalleryNews()).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
     }
     
     static func getNewsDetail(newsId: String) -> Observable<NewsDetailModel>{
-        return request(ApiRouter.getNewsDetail(newsId: newsId))
+        return request(ApiRouter.getNewsDetail(newsId: newsId)).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
     }
     
     static func getColumnDetail(newsId: String) -> Observable<ColumnDetailModel>{
-        return request(ApiRouter.getColumnDetail(newsId: newsId))
+        return request(ApiRouter.getColumnDetail(newsId: newsId)).subscribeOn(ConcurrentDispatchQueueScheduler(qos: .background))
     }
     
     //-------------------------------------------------------------------------------------------------

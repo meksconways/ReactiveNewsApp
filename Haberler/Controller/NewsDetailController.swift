@@ -69,8 +69,8 @@ class NewsDetailController: UITableViewController
         
         ApiClient.getNewsDetail(newsId: newsId!)
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { (newsDetail) in
-                self.newsDetailModel = newsDetail
+            .subscribe(onNext: { [weak self] (newsDetail) in
+                self?.newsDetailModel = newsDetail
             }, onError: { (error) in
                 // todo sc
             }, onCompleted: {

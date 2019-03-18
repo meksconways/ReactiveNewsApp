@@ -87,7 +87,7 @@ UICollectionViewDelegateFlowLayout{
         let label = UILabel()
         
         label.font = UIFont(name: "Dosis-SemiBold", size: 20)
-        label.textColor = UIColor(rgb: 0x323232)
+        label.textColor = UIColor(rgb: 0x212121)
         label.translatesAutoresizingMaskIntoConstraints = false
         label.text = "Spor Haberleri"
         label.numberOfLines = 0
